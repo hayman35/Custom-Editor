@@ -19,9 +19,9 @@ public class EnemyDesignerWindow : EditorWindow {
     Rect mageSection;
     Rect rougeSection;
     Rect warriorSection;
-    Rect MageIconSection;
-    Rect WarriorIconSection;
-    Rect RougeIconSection;
+    Rect mageIconSection;
+    Rect warriorIconSection;
+    Rect rougeIconSection;
 
     GUISkin skin;
 
@@ -70,7 +70,7 @@ public class EnemyDesignerWindow : EditorWindow {
         warriorSectionTexture = Resources.Load<Texture2D>("Icons/warrior");
 
         mageTexture = Resources.Load<Texture2D>("Icons/mage_icon");
-        warriorTexture = Resources.Load<Texture2D>("Icon_warrior_icon");
+        warriorTexture = Resources.Load<Texture2D>("Icons/warrior_icon");
         rougeTexture = Resources.Load<Texture2D>("Icons/rouge_icon");
     }
 
@@ -97,6 +97,21 @@ public class EnemyDesignerWindow : EditorWindow {
         mageSection.width = Screen.width / 3f; 
         mageSection.height = Screen.width - 50;
 
+        mageIconSection.x = (mageSection.x + mageSection.width / 2f);
+        mageIconSection.y = (mageSection.y + 8);
+        mageIconSection.width = iconSize;
+        mageIconSection.height = iconSize;
+
+        warriorIconSection.x = (warriorSection.x + warriorSection.width / 2f);
+        warriorIconSection.y = (warriorSection.y + 8);
+        warriorIconSection.width = iconSize;
+        warriorIconSection.height = iconSize;
+
+        rougeIconSection.x = (rougeSection.x + rougeSection.width / 2f);
+        rougeIconSection.y = (rougeSection.y + 8);
+        rougeIconSection.width = iconSize;
+        rougeIconSection.height = iconSize;
+
         warriorSection.x = Screen.width / 3f;
         warriorSection.y = 50;
         warriorSection.width = Screen.width / 3f; 
@@ -113,6 +128,9 @@ public class EnemyDesignerWindow : EditorWindow {
         GUI.DrawTexture(mageSection, mageSectionTexture);
         GUI.DrawTexture(rougeSection, rougeSectionTexture);
         GUI.DrawTexture(warriorSection, warriorSectionTexture);
+        GUI.DrawTexture(mageIconSection,mageTexture);
+        GUI.DrawTexture(warriorIconSection,warriorTexture);
+        GUI.DrawTexture(rougeIconSection,rougeTexture);
         
      
     }
@@ -128,6 +146,8 @@ public class EnemyDesignerWindow : EditorWindow {
     void DrawMageSettings()
     {
         GUILayout.BeginArea(mageSection);
+
+        GUILayout.Space(iconSize + 8);
 
         GUILayout.Label("Mage",skin.GetStyle("MageHeader"));
 
