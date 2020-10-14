@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Diagnostics.SymbolStore;
+using System;
 using UnityEngine;
 using UnityEditor;
  
@@ -8,6 +9,9 @@ public class EnemyDesignerWindow : EditorWindow {
     Texture2D mageSectionTexture;
     Texture2D rougeSectionTexture;
     Texture2D warriorSectionTexture;
+    Texture2D mageTexture;
+    Texture2D warriorTexture;
+    Texture2D rougeTexture;
 
     Color headerSectionColor = new Color(13f/255f, 32f/255f, 44f/255f, 1f);
 
@@ -15,6 +19,11 @@ public class EnemyDesignerWindow : EditorWindow {
     Rect mageSection;
     Rect rougeSection;
     Rect warriorSection;
+    Rect MageIconSection;
+    Rect WarriorIconSection;
+    Rect RougeIconSection;
+
+    GUISkin skin;
 
     static MageData mageData;
     static WarriorData warriorData;
@@ -24,13 +33,14 @@ public class EnemyDesignerWindow : EditorWindow {
     public static WarriorData WarriorInfo { get { return warriorData; } }
     public static RougeData RouugeInfo { get { return rougeData; } }
 
-
+    float iconSize = 80;
     
         [MenuItem("Custom Unity Editor/Enemy Designer")]
         private static void ShowWindow() {
             var window = GetWindow<EnemyDesignerWindow>();
             window.titleContent = new GUIContent("Enemy Designer");
-            window.minSize = new Vector2(600,300);
+            window.maxSize = new Vector2(800f, 500f);
+            window.minSize = window.maxSize;
             window.Show();
         }
 
@@ -39,6 +49,7 @@ public class EnemyDesignerWindow : EditorWindow {
     {
         InitTextures();
         InitData();
+        skin = Resources.Load<GUISkin>("Guistyles/EnemyDesignerSkin");
     }
 
     public static void InitData()
@@ -57,6 +68,10 @@ public class EnemyDesignerWindow : EditorWindow {
         mageSectionTexture = Resources.Load<Texture2D>("Icons/mage");
         rougeSectionTexture = Resources.Load<Texture2D>("Icons/rouge");
         warriorSectionTexture = Resources.Load<Texture2D>("Icons/warrior");
+
+        mageTexture = Resources.Load<Texture2D>("Icons/mage_icon");
+        warriorTexture = Resources.Load<Texture2D>("Icon_warrior_icon");
+        rougeTexture = Resources.Load<Texture2D>("Icons/rouge_icon");
     }
 
 
@@ -105,7 +120,7 @@ public class EnemyDesignerWindow : EditorWindow {
     {
         GUILayout.BeginArea(headerSection);
 
-        GUILayout.Label("Enemy Designer");
+        GUILayout.Label("Enemy Designer", skin.GetStyle("Header1"));
 
 
         GUILayout.EndArea();
@@ -114,16 +129,16 @@ public class EnemyDesignerWindow : EditorWindow {
     {
         GUILayout.BeginArea(mageSection);
 
-        GUILayout.Label("Mage Section");
+        GUILayout.Label("Mage",skin.GetStyle("MageHeader"));
 
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Damage");
-        mageData.dmgType = (Types.MageDmgType)EditorGUILayout.EnumPopup(mageData.dmgType);
+        GUILayout.Label("Damage", skin.GetStyle("MageField"));
+        mageData.dmgType = (Types.MageDmgType)EditorGUILayout.EnumPopup(mageData.dmgType, skin.GetStyle("MageField")); // add different styles at the end 
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Weapon");
-        mageData.wpnType = (Types.MageWpnType)EditorGUILayout.EnumPopup(mageData.wpnType);
+        GUILayout.Label("Weapon",skin.GetStyle("MageField"));
+        mageData.wpnType = (Types.MageWpnType)EditorGUILayout.EnumPopup(mageData.wpnType,skin.GetStyle("MageField"));
         EditorGUILayout.EndHorizontal();
 
         if(GUILayout.Button("Create!", GUILayout.Height(40)))
@@ -138,16 +153,16 @@ public class EnemyDesignerWindow : EditorWindow {
     {
         GUILayout.BeginArea(warriorSection);
 
-        GUILayout.Label("Warrior Area");
+        GUILayout.Label("Warrior",skin.GetStyle("WarriorHeader"));
 
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Class");
-        warriorData.classType = (Types.WarriorClassType)EditorGUILayout.EnumPopup(warriorData.classType);
+        GUILayout.Label("Class",skin.GetStyle("WarriorField"));
+        warriorData.classType = (Types.WarriorClassType)EditorGUILayout.EnumPopup(warriorData.classType,skin.GetStyle("WarriorField"));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
 
-        GUILayout.Label("Weapon");
-        warriorData.wpnType = (Types.WarriorWpnType)EditorGUILayout.EnumPopup(warriorData.wpnType);
+        GUILayout.Label("Weapon",skin.GetStyle("WarriorField"));
+        warriorData.wpnType = (Types.WarriorWpnType)EditorGUILayout.EnumPopup(warriorData.wpnType,skin.GetStyle("WarriorField"));
         EditorGUILayout.EndHorizontal();
 
 
@@ -163,16 +178,16 @@ public class EnemyDesignerWindow : EditorWindow {
     {
         GUILayout.BeginArea(rougeSection);
 
-        GUILayout.Label("Rouge Area");
+        GUILayout.Label("Rouge",skin.GetStyle("RougeHeader"));
 
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Strategy");
-        rougeData.strategyType = (Types.RougeStrategyType)EditorGUILayout.EnumPopup(rougeData.strategyType);
+        GUILayout.Label("Strategy",skin.GetStyle("RougeField"));
+        rougeData.strategyType = (Types.RougeStrategyType)EditorGUILayout.EnumPopup(rougeData.strategyType,skin.GetStyle("RougeField"));
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Weapon");
-        rougeData.wpnType = (Types.RougeWpnType)EditorGUILayout.EnumPopup(rougeData.wpnType);
+        GUILayout.Label("Weapon",skin.GetStyle("RougeField"));
+        rougeData.wpnType = (Types.RougeWpnType)EditorGUILayout.EnumPopup(rougeData.wpnType,skin.GetStyle("RougeField"));
         EditorGUILayout.EndHorizontal();
 
 
